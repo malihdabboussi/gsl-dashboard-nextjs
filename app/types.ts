@@ -76,7 +76,7 @@ export interface InvoiceViewProps {
 }
 
 export interface Entity {
-  id: string;
+  id?: string;
   name: string;
   phone: string;
   email: string;
