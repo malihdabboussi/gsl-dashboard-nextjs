@@ -93,7 +93,7 @@ export default function CustomersPage() {
 
     useEffect(() => {
       fetch(
-        "https://restcountries.com/v2/all?fields=name,callingCodes,alpha2Code",
+        "https://restcountries.com/v2/all?fields=name,callingCodes,alpha2Code"
       )
         .then((res) => res.json())
         .then((data) => {
@@ -107,7 +107,7 @@ export default function CustomersPage() {
                 if (a.label < b.label) return -1;
                 if (a.label > b.label) return 1;
                 return 0;
-              }),
+              })
           );
           setPhoneCountries(
             data
@@ -121,7 +121,7 @@ export default function CustomersPage() {
                 if (a.label < b.label) return -1;
                 if (a.label > b.label) return 1;
                 return 0;
-              }),
+              })
           );
         });
     }, []);
@@ -154,18 +154,18 @@ export default function CustomersPage() {
               ],
               town: refs.billingInformation.address.town.current.value,
               postalCode: parseInt(
-                refs.billingInformation.address.postalCode.current.value,
+                refs.billingInformation.address.postalCode.current.value
               ),
             },
             phone: {
               country: {
                 id: selectedPhoneCountry.split(" ")[0],
                 code: parseInt(
-                  selectedPhoneCountry.split(" ")[1].split("+")[1],
+                  selectedPhoneCountry.split(" ")[1].split("+")[1]
                 ),
               },
               phoneNumber: parseInt(
-                refs.billingInformation.phone.phoneNumber.current.value,
+                refs.billingInformation.phone.phoneNumber.current.value
               ),
             },
           },
@@ -175,11 +175,11 @@ export default function CustomersPage() {
           ],
         };
         console.log(data);
-	createCustomer(data)
+        createCustomer(data);
         // END
       } else {
         alert(
-          "Fill in the information first. Name, email, and phone number are required.",
+          "Fill in the information first. Name, email, and phone number are required."
         );
       }
     };

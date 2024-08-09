@@ -4,7 +4,7 @@ const rootUrl = "https://172.232.219.53/api/v2";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 export async function getAllSuppliers(
-  collection: "all" | "top" | "first-time" | "repeat" = "all",
+  collection: "all" | "top" | "first-time" | "repeat" = "all"
 ) {
   const endpoint = "/Supplier/getAllSupplier";
   const res = await fetch(rootUrl + endpoint);
@@ -18,7 +18,7 @@ export async function getAllSuppliers(
       id: s.id,
       name: s.name,
       email: s.email,
-      phone: s.phone.toString(),
+      phone: s.phoneNumber.country.code + s.phoneNumber.number,
       total: s.total ?? 0,
       balance: s.balance ?? 0,
       created: s.created_at,
@@ -49,7 +49,7 @@ export async function getAllSuppliers(
 }
 
 export async function getAllCustomers(
-  collection: "all" | "top" | "first-time" | "repeat" = "all",
+  collection: "all" | "top" | "first-time" | "repeat" = "all"
 ) {
   const endpoint = "/Customer/getAllCustomer";
   const res = await fetch(rootUrl + endpoint);
@@ -57,7 +57,7 @@ export async function getAllCustomers(
 
   console.log(result);
 
-  /* 
+  /*
   {
     id: 1,
     name: 'Adam',
@@ -112,6 +112,41 @@ export async function getAllCustomers(
   console.log(customers);
 
   return customers;
+}
+
+export async function createSupplier(data: Entity) {
+  console.log(data);
+
+  const supplier = {
+    name: data.name,
+    email: data.email,
+    total: data.total,
+    balance: data.balance,
+    from_date: data.creditLimitDuration
+      ? data.creditLimitDuration[0].toDateString()
+      : null,
+    to_date: data.creditLimitDuration
+      ? data.creditLimitDuration[1].toDateString()
+      : null,
+    country: data.billingInfo?.address.country,
+    addressLine1: data.billingInfo?.address.lines[0],
+    addressLine2: data.billingInfo?.address.lines[1],
+    town: data.billingInfo?.address.town,
+    postalCode: data.billingInfo?.address.postalCode,
+    phoneNumber: data.billingInfo?.phone,
+  };
+
+  const endpoint = "/Supplier/AddSupplier";
+  const res = await fetch(rootUrl + endpoint, {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(supplier),
+  });
+  console.log(JSON.stringify(supplier));
+  console.log(res);
 }
 
 export async function createCustomer(data: Entity) {
